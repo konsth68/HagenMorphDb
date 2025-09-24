@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Morphology russian language from Hagen dictionary</Title>
+        <Authors>Konstantin Dobkin (konsth68@gmail.com)</Authors>
+        <Description>Morphology russian language on Sqlite db created from hagen.txt </Description>
+        <Copyright>MIT</Copyright>
+        <Version>1.0.8</Version>
+        <Platforms>AnyCPU;x64</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Logger.fs" />
+        <Compile Include="DapperDb.fs" />
+        <Compile Include="DbModel.fs" />
+        <Compile Include="DataMorph.fs" />
+        <Compile Include="TrieOptimization.fs" />
+        <Compile Include="FormatLemma.fs" />
+        <Compile Include="HagenMorphDbService.fs" />
+        <Content Include="Db\HagenMorph.db">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.1.66" />
+      <PackageReference Include="KTrie" Version="3.0.1" />
+      <PackageReference Include="Serilog" Version="4.3.0" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+      <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+      <PackageReference Include="SourceGear.sqlite3" Version="3.50.4.2" />
+      <PackageReference Include="System.Data.SQLite" Version="2.0.2" />
+    </ItemGroup>
+
+</Project>
