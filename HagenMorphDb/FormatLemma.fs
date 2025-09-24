@@ -601,7 +601,6 @@ module FormatLemma =
         
         dic
 
-
     let makeIpfFutureString (lm :LemmaRec) =
         let flatWorInfoSeq = flatLemmaRec lm
         let ipfFut : IpfFutureString =
