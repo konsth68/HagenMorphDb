@@ -4,6 +4,8 @@ open KTrie
 open HagenMorphDb.TrieOpt
 open HagenMorphDb.DataMorph
 open HagenMorphDb.FormatLemma
+open System.Collections.Generic
+open System.IO
 
 type HagenMorphService(DbString :string,LogDb :bool)  =    
     let Db = DapperDb.DapperDbObj (DbString, LogDb)
@@ -44,4 +46,7 @@ type HagenMorphService(DbString :string,LogDb :bool)  =
         let fr = makeFormatStringDict r
         ResizeArray fr
         
-               
+    new () =
+        let curDir = Directory.GetCurrentDirectory()
+        let initString = $"Data Source={curDir}\\Db\\HagenMorph.db;version=3;"
+        HagenMorphService(initString,false)

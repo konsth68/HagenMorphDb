@@ -2,7 +2,6 @@
 
 using HagenMorphDb;
 
-
 internal class Program
 {
     static void Main(string[] args)
@@ -20,7 +19,7 @@ public class Work
     {
         var curDir = Directory.GetCurrentDirectory();
         var initStr = $"Data Source={curDir}\\Db\\HagenMorph.db;version=3;";
-        _hmsrv = new HagenMorphService(initStr, false);
+        _hmsrv = new HagenMorphService();//HagenMorphService(initStr, false);
     }
 
     private void PrintStrArr(string[] str)

@@ -2,7 +2,7 @@
 
 open System
 open Dapper
-open Microsoft.Data.Sqlite
+open System.Data.SQLite
 
 module Util =
     
@@ -84,7 +84,7 @@ module DapperDb =
      
     let  QueryOneDapper<'T> (connStr :string) (sql :string) :'T option =
 
-        use conn= new SqliteConnection(connStr)
+        use conn= new SQLiteConnection(connStr)
 
         let res = conn.QuerySingle<'T>(sql)
         
@@ -99,7 +99,7 @@ module DapperDb =
 
     let  QueryManyDapper<'T> (connStr :string) (sql :string) : 'T seq option =
 
-        use conn= new SqliteConnection(connStr)
+        use conn= new SQLiteConnection(connStr)
 
         let res = conn.Query<'T>(sql)
         
@@ -114,7 +114,7 @@ module DapperDb =
 
     let  ExecuteDapper (connStr :string) (sql :string) : int =
 
-        use conn = new SqliteConnection(connStr)
+        use conn = new SQLiteConnection(connStr)
 
         let res = conn.Execute(sql)
 
@@ -125,7 +125,7 @@ module DapperDb =
     
     let  ExecuteTransactDapper (connStr :string) (sql :string) : int option =
 
-        use conn = new SqliteConnection(connStr)
+        use conn = new SQLiteConnection(connStr)
 
         conn.Open()
         
@@ -145,9 +145,9 @@ module DapperDb =
         
         r        
 
-    let  ExecuteOutsideTransactDapper (connStr :string) (sql :string) (tran :SqliteTransaction) : int option =
+    let  ExecuteOutsideTransactDapper (connStr :string) (sql :string) (tran :SQLiteTransaction) : int option =
 
-        use conn = new SqliteConnection(connStr)
+        use conn = new SQLiteConnection(connStr)
 
         conn.Open()
         
@@ -167,7 +167,7 @@ module DapperDb =
     
     let ExecuteTransactManyDapper (connStr :string) (sqlList :string list)  =
         
-        use conn = new SqliteConnection(connStr)
+        use conn = new SQLiteConnection(connStr)
 
         conn.Open()
         
@@ -193,7 +193,7 @@ module DapperDb =
 
     let Execute (sql :string) = ExecuteDapper ConnectionString sql
 
-    let ExecuteOutsideTransact (sql :string) (tran :SqliteTransaction) = ExecuteOutsideTransactDapper ConnectionString sql tran 
+    let ExecuteOutsideTransact (sql :string) (tran :SQLiteTransaction) = ExecuteOutsideTransactDapper ConnectionString sql tran 
     
     let ExecuteTransact (sql :string) = ExecuteTransactDapper ConnectionString sql
     

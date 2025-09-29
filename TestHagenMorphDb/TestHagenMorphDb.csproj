@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HagenMorphDb\HagenMorphDb.fsproj" />
+    <ProjectReference Include="..\HagenMorphDb\HagenMorphDb.fsproj">
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
