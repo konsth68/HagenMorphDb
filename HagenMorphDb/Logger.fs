@@ -3,7 +3,7 @@
 open Serilog
 
 [<RequireQualifiedAccess>]
-module Log =
+module HmdLog =
 
     let loggerConfig =
         LoggerConfiguration()

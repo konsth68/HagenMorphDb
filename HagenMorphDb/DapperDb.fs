@@ -74,7 +74,7 @@ module DapperDb =
                
         let LogDapperDb str =
             if logFlag then
-                Log.Logger.Information(str)
+                HmdLog.Logger.Information(str)
                 
         
         member  this.QueryOneDapper<'T>  (sql :string) :'T option =
