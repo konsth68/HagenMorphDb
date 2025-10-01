@@ -4,8 +4,15 @@ open KTrie
 open HagenMorphDb.TrieOpt
 open HagenMorphDb.DataMorph
 open HagenMorphDb.FormatLemma
-open System.Collections.Generic
 open System.IO
+
+type IHagenMorphService =
+    abstract GetLemmaForPartialWord  : string -> ResizeArray<LemmaRec>
+    abstract GetLemmaWord  : string -> ResizeArray<LemmaRec>
+    abstract GetTrieLemmaWord  : string -> ResizeArray<LemmaRec>
+    abstract GetFormatLemmaWord  : string -> ResizeArray<FormatStringDict>
+    abstract GetTrieLemmaWordPos  :  string * PosTag-> ResizeArray<LemmaRec>
+    abstract GetFormatLemmaWordPos  : string * PosTag -> ResizeArray<FormatStringDict>
 
 type HagenMorphService(DbString :string,LogDb :bool)  =    
     let Db = DapperDb.DapperDbObj (DbString, LogDb)
@@ -16,35 +23,36 @@ type HagenMorphService(DbString :string,LogDb :bool)  =
         initLemmaTrie() 
         initDataMorphDb Db
     
-    member this.GetLemmaForPartialWord (partWord :string) =  
-        let r = getLemmaPartWord partWord 
-        let res = ResizeArray r
-        res
+    interface IHagenMorphService with
+        member this.GetLemmaForPartialWord (partWord :string) =  
+            let r = getLemmaPartWord partWord 
+            let res = ResizeArray<LemmaRec> r
+            res
     
-    member this.GetLemmaWord (word :string) =  
-        let r = getLemmaWord word 
-        let res = ResizeArray r
-        res
+        member this.GetLemmaWord (word :string) =  
+            let r = getLemmaWord word 
+            let res = ResizeArray<LemmaRec> r
+            res
     
-    member this.GetTrieLemmaWord (word :string) = 
-        let r = getMorphWord word 
-        ResizeArray r
+        member this.GetTrieLemmaWord (word :string) = 
+            let r = getMorphWord word 
+            ResizeArray<LemmaRec> r
          
     
-    member this.GetFormatLemmaWord (word :string) =
-        let r = getLemmaWord word         
-        let fr = makeFormatStringDict r
-        ResizeArray fr
+        member this.GetFormatLemmaWord (word :string) =
+            let r = getLemmaWord word         
+            let fr = makeFormatStringDict r
+            ResizeArray<FormatStringDict> fr
            
-    member this.GetTrieLemmaWordPos (word :string, posTag: PosTag) = 
-        let r = getMorphWordPos word posTag
-        ResizeArray r
+        member this.GetTrieLemmaWordPos (word :string, posTag: PosTag) = 
+            let r = getMorphWordPos word posTag
+            ResizeArray<LemmaRec> r
         
     
-    member this.GetFormatLemmaWordPos (word :string, posTag: PosTag) =
-        let r = getMorphWordPos word posTag         
-        let fr = makeFormatStringDict r
-        ResizeArray fr
+        member this.GetFormatLemmaWordPos (word :string, posTag: PosTag) =
+            let r = getMorphWordPos word posTag         
+            let fr = makeFormatStringDict r
+            ResizeArray<FormatStringDict> fr
         
     new () =
         let curDir = Directory.GetCurrentDirectory()
