@@ -2,7 +2,7 @@
 
 open System
 open Dapper
-open System.Data.SQLite
+open Microsoft.Data.Sqlite
 
 module Util =
     
@@ -79,48 +79,48 @@ module DapperDb =
         
         member  this.QueryOneDapper<'T>  (sql :string) :'T option =
 
-            use conn = new SQLiteConnection(connStr)
+            use conn = new SqliteConnection(connStr)
 
             let res = conn.QuerySingle<'T>(sql)
         
             let r = 
                 if notNull res then
-                    LogDapperDb($"Query with sql = \"{sql}\" success on {res} result ")
+                    LogDapperDb($"Query with Sql = \"{sql}\" success on {res} result ")
                     Some res                
                 else
-                    LogDapperDb($"Query with sql = \"{sql}\" None ")                
+                    LogDapperDb($"Query with Sql = \"{sql}\" None ")                
                     None        
             r
 
         member  this.QueryManyDapper<'T>  (sql :string) : 'T seq option =
 
-            use conn= new SQLiteConnection(connStr)
+            use conn= new SqliteConnection(connStr)
 
             let res = conn.Query<'T>(sql)
         
             let r = 
                 if notNull res then
-                    LogDapperDb($"Query with sql = \"{sql}\" success on count {Seq.length res} result ")
+                    LogDapperDb($"Query with Sql = \"{sql}\" success on count {Seq.length res} result ")
                     Some res
                 else
-                    LogDapperDb($"Query with sql = \"{sql}\" None ")                
+                    LogDapperDb($"Query with Sql = \"{sql}\" None ")                
                     None
             r
 
         member  this.ExecuteDapper  (sql :string) : int =
 
-            use conn = new SQLiteConnection(connStr)
+            use conn = new SqliteConnection(connStr)
 
             let res = conn.Execute(sql)
 
-            LogDapperDb($"Query with sql = \"{sql}\" success on result = {res} ")
+            LogDapperDb($"Query with Sql = \"{sql}\" success on result = {res} ")
                         
             res        
 
     
         member  this.ExecuteTransactDapper  (sql :string) : int option =
 
-            use conn = new SQLiteConnection(connStr)
+            use conn = new SqliteConnection(connStr)
 
             use tran = conn.BeginTransaction(System.Data.IsolationLevel.ReadCommitted)
 
@@ -128,36 +128,36 @@ module DapperDb =
                 try
                     let res = conn.Execute(sql,tran)                
                     tran.Commit()
-                    LogDapperDb($"Query with sql = \"{sql}\" success on result = {res} ")
+                    LogDapperDb($"Query with Sql = \"{sql}\" success on result = {res} ")
                     Some res
                 with
                 | ex ->
-                    LogDapperDb($"Query with sql = \"{sql}\" Rollback and exception {ex.Message} ")                
+                    LogDapperDb($"Query with Sql = \"{sql}\" Rollback and exception {ex.Message} ")                
                     tran.Rollback()
                     None
         
             r        
 
-        member this.ExecuteOutsideTransactDapper  (sql :string) (tran :SQLiteTransaction) : int option =
+        member this.ExecuteOutsideTransactDapper  (sql :string) (tran :SqliteTransaction) : int option =
 
-            use conn = new SQLiteConnection(connStr)
+            use conn = new SqliteConnection(connStr)
 
             let r = 
                 try
                     let res = conn.Execute(sql,tran)
                     //tran.Commit()
-                    LogDapperDb($"Query with sql = \"{sql}\" success on result = {res} ")
+                    LogDapperDb($"Query with Sql = \"{sql}\" success on result = {res} ")
                     Some res
                 with
                 | ex ->
-                    LogDapperDb($"Query with sql = \"{sql}\" Rollback and exception {ex.Message} ")                
+                    LogDapperDb($"Query with Sql = \"{sql}\" Rollback and exception {ex.Message} ")                
                     tran.Rollback()
                     None        
             r        
     
         member this.ExecuteTransactManyDapper  (sqlList :string list)  =
         
-            use conn = new SQLiteConnection(connStr)
+            use conn = new SqliteConnection(connStr)
 
             conn.Open()
         
@@ -166,12 +166,12 @@ module DapperDb =
             let r =
                 try
                     let res = sqlList |> List.map (fun x -> conn.Execute( x, tran) ) 
-                    LogDapperDb($"Query with sql = \"{sqlList}\" success on result = {res} ")
+                    LogDapperDb($"Query with Sql = \"{sqlList}\" success on result = {res} ")
                     tran.Commit()
                     Some res
                 with
                 | ex ->
-                    LogDapperDb($"Query with sql = \"{sqlList}\" Rollback and exception {ex.Message} ")                
+                    LogDapperDb($"Query with Sql = \"{sqlList}\" Rollback and exception {ex.Message} ")                
                     tran.Rollback()
                     None
             r

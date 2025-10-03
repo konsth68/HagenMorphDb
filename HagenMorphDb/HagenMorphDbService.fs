@@ -5,6 +5,7 @@ open HagenMorphDb.TrieOpt
 open HagenMorphDb.DataMorph
 open HagenMorphDb.FormatLemma
 open System.IO
+open Serilog
 
 type IHagenMorphService =
     abstract GetLemmaForPartialWord  : string -> ResizeArray<LemmaRec>
@@ -55,6 +56,8 @@ type HagenMorphService(DbString :string,LogDb :bool)  =
             ResizeArray<FormatStringDict> fr
         
     new () =
-        let curDir = Directory.GetCurrentDirectory()
-        let initString = $"Data Source={curDir}\\Db\\HagenMorph.db;version=3;"
+        //let curDir = Directory.GetCurrentDirectory()
+        let initString = $"Data Source=c:\\users\\konsth\\AppData\\Local\\FranDict\\HagenMorph.db"
+        
+        //HmdLog.Logger.Information $"INITSTRING = {initString}"
         HagenMorphService(initString,false)
