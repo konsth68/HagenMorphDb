@@ -277,6 +277,7 @@ module FormatLemma =
         let ani = printAnimalTag m.AnimalTag
         
         let str = $"{gen}{num}{cas}{ten}{per}{ani}"
+                
         str
     
     let flatWordRec (wm :WordRec) =
@@ -373,16 +374,19 @@ module FormatLemma =
                 |> Seq.filter (fun w -> testPersonTag per w) 
                 |> Seq.filter (fun w -> testAnimalTag ani w) 
             
+    
+    let formatString (morf :string) (word :string) =
+        $"<| {morf} |>  <# {word} #>"    
         
     let formatTagString (wiq :WordInfo seq) = 
         match wiq.Count() with
         | x when x = 0 -> "-"
         | x when x = 1 ->
                 let w = wiq.First()
-                printMorph w.Morph + " " + w.Word
+                formatString (printMorph w.Morph) w.Word 
         | x when x > 1 ->
                 wiq 
-                |> Seq.map (fun w -> printMorph w.Morph + " " + w.Word)
+                |> Seq.map (fun w -> formatString (printMorph w.Morph) w.Word)
                 |> String.concat ", "
                 
         | _ -> "-" 
