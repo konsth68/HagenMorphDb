@@ -13,7 +13,7 @@ internal static  class Program
 
 public class Work
 {
-    HagenMorphService _hmsrv;
+    IHagenMorphService _hmsrv;
          
     public Work()
     {
@@ -96,10 +96,31 @@ public class Work
         }
     }
 
+    private void PrintWordInfo(WordInfo wi)
+    {
+        Console.WriteLine($"HagenId = {wi.Id.HagenId}");
+        Console.WriteLine($"LemmaId = {wi.Id.LemmaId}");
+        Console.WriteLine($"WordId = {wi.Id.WordId}");
+        Console.WriteLine($"Type = {wi.Type}");
+        Console.WriteLine($"Word = {wi.Word}");
+        Console.WriteLine($"AccentPos = {wi.AccentPos}");
+        Console.WriteLine($"PosTag = {wi.Morph.PosTag}");
+        Console.WriteLine($"GenderTag = {wi.Morph.GenderTag}");
+        Console.WriteLine($"NumberTag = {wi.Morph.NumberTag}");
+        Console.WriteLine($"CaseTag = {wi.Morph.CaseTag}");
+        Console.WriteLine($"TenseTag = {wi.Morph.TenseTag}");
+        Console.WriteLine($"PersonTag = {wi.Morph.PersonTag}");
+        Console.WriteLine($"AnimalTag = {wi.Morph.AnimalTag}");
+        Console.WriteLine($"OverTag = {wi.Morph.OverTag}");
+
+
+    }
+
     public void Run()
     {
         Console.WriteLine("__START__");
-
+        
+        /*
         var res = _hmsrv.GetFormatLemmaWordPos("бегать", PosTag.Verb);
 
         if(res != null)
@@ -109,8 +130,14 @@ public class Work
                 PrintFormatStringDict(r);
             }
         }
-
-
+        */
+        var res = _hmsrv.GetWordInfos("заступил");
+        foreach (var w in  res)
+        {
+            Console.WriteLine("-----------------------------------------------------------------------------------");
+            PrintWordInfo(w);
+        }
+        
         Console.WriteLine("__END__");
     }
 }

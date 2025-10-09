@@ -9,9 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="HagenMorphDb">
-      <HintPath>..\HagenMorphDb\bin\x64\Debug\net9.0\HagenMorphDb.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\HagenMorphDb\HagenMorphDb.fsproj" />
   </ItemGroup>
 
 </Project>

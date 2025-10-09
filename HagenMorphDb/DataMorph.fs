@@ -283,6 +283,11 @@ module DataMorph =
                  
         lem       
 
+    let sqlQueryOneWord (word :string) =
+        let sql = $"SELECT {HagenRawReadColumn} FROM HagenRaw WHERE Word = '{word}'"
+        sql
+
+    
     let sqlQueryPartWord (partword :string) =
         let sql = $"SELECT {HagenRawReadColumn} FROM HagenRaw WHERE Word like '{partword}%%'"
         sql
@@ -313,7 +318,12 @@ module DataMorph =
         let lemmas = lemmasSeq |> Seq.map (fun x -> fillLemmaRec x wi)
         
         lemmas     
-    
+    let getWordInfo (word :string) :WordInfo seq =
+        let mr = getMorphFromHagenRaw (sqlQueryOneWord word)
+        match mr with
+        | Some x -> Seq.map (fun y -> convertHagenRawReadToWordInfo y) x                                      
+        | None -> Seq.empty<WordInfo>
+
     let getLemmaWord (word :string) =
         let mr = getMorphFromHagenRaw (sqlQueryWord word)
         let lm = convertHagenDbToLemmas mr

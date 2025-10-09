@@ -14,6 +14,7 @@ type IHagenMorphService =
     abstract GetFormatLemmaWord  : string -> ResizeArray<FormatStringDict>
     abstract GetTrieLemmaWordPos  :  string * PosTag-> ResizeArray<LemmaRec>
     abstract GetFormatLemmaWordPos  : string * PosTag -> ResizeArray<FormatStringDict>
+    abstract GetWordInfos : string -> ResizeArray<WordInfo>
 
 type HagenMorphService(DbString :string,LogDb :bool)  =    
     let Db = DapperDb.DapperDbObj (DbString, LogDb)
@@ -54,6 +55,10 @@ type HagenMorphService(DbString :string,LogDb :bool)  =
             let r = getMorphWordPos word posTag         
             let fr = makeFormatStringDict r
             ResizeArray<FormatStringDict> fr
+        
+        member this.GetWordInfos (word :string) =
+            let r = getWordInfo word
+            ResizeArray<WordInfo> r 
         
     new () =
         //let curDir = Directory.GetCurrentDirectory()
