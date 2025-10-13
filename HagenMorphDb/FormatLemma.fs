@@ -376,7 +376,7 @@ module FormatLemma =
             
     
     let formatString (morf :string) (word :string) =
-        $"<| {morf} |>  <# {word} #>"    
+        $"<m {morf} m>  <w {word} w>"    
         
     let formatTagString (wiq :WordInfo seq) = 
         match wiq.Count() with
@@ -866,7 +866,6 @@ module FormatLemma =
                             let nounDict:FormatStringDict = 
                                 {
                                     Pos = PosTag.Noun
-
                                     NounStringDict = makeNounStringDict lm
                                     AdjStringDict = null
                                     IpfPresentStrinDict  = null

@@ -8,10 +8,10 @@
         <Authors>Konstantin Dobkin (konsth68@gmail.com)</Authors>
         <Description>Morphology russian language on Sqlite db created from hagen.txt </Description>
         <Copyright>MIT</Copyright>
-        <Version>1.0.26</Version>
+        <Version>1.0.28</Version>
         <Platforms>AnyCPU;x64</Platforms>
-        <AssemblyVersion>1.0.26</AssemblyVersion>
-        <FileVersion>1.0.26</FileVersion>
+        <AssemblyVersion>1.0.28</AssemblyVersion>
+        <FileVersion>1.0.28</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
