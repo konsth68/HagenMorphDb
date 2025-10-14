@@ -131,7 +131,7 @@ public class Work
             }
         }
         */
-        var res = _hmsrv.GetWordInfos("заступил");
+        var res = _hmsrv.GetWordInfos("доминошка");
         foreach (var w in  res)
         {
             Console.WriteLine("-----------------------------------------------------------------------------------");

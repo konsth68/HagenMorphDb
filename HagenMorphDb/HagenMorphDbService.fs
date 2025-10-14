@@ -1,5 +1,6 @@
 ﻿namespace HagenMorphDb
 
+open HagenMorphDb.DapperDb
 open KTrie
 open HagenMorphDb.TrieOpt
 open HagenMorphDb.DataMorph
@@ -8,6 +9,7 @@ open System.IO
 open Serilog
 
 type IHagenMorphService =
+    abstract Setup : string * bool -> unit
     abstract GetLemmaForPartialWord  : string -> ResizeArray<LemmaRec>
     abstract GetLemmaWord  : string -> ResizeArray<LemmaRec>
     abstract GetTrieLemmaWord  : string -> ResizeArray<LemmaRec>
@@ -16,16 +18,27 @@ type IHagenMorphService =
     abstract GetFormatLemmaWordPos  : string * PosTag -> ResizeArray<FormatStringDict>
     abstract GetWordInfos : string -> ResizeArray<WordInfo>
 
-type HagenMorphService(DbString :string,LogDb :bool)  =    
-    let Db = DapperDb.DapperDbObj (DbString, LogDb)
-    let LemmasTrie = TrieDictionary<LemmaTrieData>()
+type HagenMorphService()  =    
+    //let Db = null;//DapperDb.DapperDbObj (DbString, LogDb)
+    //let LemmaTrie = null;//TrieDictionary<LemmaTrieData>()
+    //do
+    //    initTrieDb (Db, LemmasTrie)
+    //    initLemmaTrie() 
+    //    initDataMorphDb Db
     
-    do
-        initTrieDb (Db, LemmasTrie)
-        initLemmaTrie() 
-        initDataMorphDb Db
+    
     
     interface IHagenMorphService with
+        
+        member this.Setup (dbString:string, logDb:bool) =
+            let initString = $"Data Source={dbString}/HagenMorph.db"
+            let db = DapperDb.DapperDbObj (initString, logDb)
+            let LemmasTrie = TrieDictionary<LemmaTrieData>()
+            initTrieDb (db, LemmasTrie)
+            initLemmaTrie() 
+            initDataMorphDb db
+            ()
+        
         member this.GetLemmaForPartialWord (partWord :string) =  
             let r = getLemmaPartWord partWord 
             let res = ResizeArray<LemmaRec> r
@@ -60,9 +73,9 @@ type HagenMorphService(DbString :string,LogDb :bool)  =
             let r = getWordInfo word
             ResizeArray<WordInfo> r 
         
-    new () =
-        //let curDir = Directory.GetCurrentDirectory()
-        let initString = $"Data Source=c:\\users\\konsth\\AppData\\Local\\FranDict\\HagenMorph.db"
+    //new () =
+    //    let curDir = Directory.GetCurrentDirectory()
+    //    let initString = $"Data Source={curDir}/HagenMorph.db"
         
         //HmdLog.Logger.Information $"INITSTRING = {initString}"
-        HagenMorphService(initString,false)
+    //    HagenMorphService(initString,false)
