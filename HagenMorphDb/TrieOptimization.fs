@@ -46,8 +46,7 @@ module TrieOpt =
         | [x] -> Some (key, Normal x)
         | _ -> Some (key, Duplicate lst)
     
-    let convertToLemmaTrieData (dbData: LemmaData seq ) =
-       
+    let convertToLemmaTrieData (dbData: LemmaData seq ) =     
         dbData
         |> Seq.groupBy (fun x -> x.Word) 
         |> Seq.map (fun x -> parseLemmaGroup x ) 

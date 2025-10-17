@@ -383,10 +383,10 @@ module FormatLemma =
         | x when x = 0 -> "-"
         | x when x = 1 ->
                 let w = wiq.First()
-                formatString (printMorph w.Morph) w.Word 
+                formatString (printMorph w.Morph) w.DispWord 
         | x when x > 1 ->
                 wiq 
-                |> Seq.map (fun w -> formatString (printMorph w.Morph) w.Word)
+                |> Seq.map (fun w -> formatString (printMorph w.Morph) w.DispWord)
                 |> String.concat ", "
                 
         | _ -> "-" 
@@ -564,7 +564,7 @@ module FormatLemma =
            [| ipfPr.P3sg; ipfPr.P3pl |]
         |]
     
-    let makeIpfPresentStrinDict (lm :LemmaRec) =
+    let makeIpfPresentStringDict (lm :LemmaRec) =
         let ipfPr = makeIpfPresentString lm
         
         let dic = Dictionary<string,string[]>()
@@ -595,7 +595,7 @@ module FormatLemma =
            [| ipfPasse.P123sg; ipfPasse.P123pl |]
         |]
     
-    let makeIpfPasseStrinDict (lm :LemmaRec) =
+    let makeIpfPasseStringDict (lm :LemmaRec) =
         let ipfPasse = makeIpfPasseString lm
         
         let dic = Dictionary<string,string[]>()
@@ -636,7 +636,7 @@ module FormatLemma =
            [| ipfFut.P3sg; ipfFut.P3pl |]
         |]
     
-    let makeIpfFutureStrinDict (lm :LemmaRec) =
+    let makeIpfFutureStringDict (lm :LemmaRec) =
         let ipfFut = makeIpfFutureString lm
         
         let dic = Dictionary<string,string[]>()
@@ -717,7 +717,7 @@ module FormatLemma =
            [| ipfPartPr.Pm; ipfPartPr.Pf; ipfPartPr.Pn; ipfPartPr.Ppl |]
         |]
     
-    let makeIpfParticiplePresentStrinDict (lm :LemmaRec) =
+    let makeIpfParticiplePresentStringDict (lm :LemmaRec) =
         let ipfPartPr = makeIpfParticiplePresentString lm
 
         let dic = Dictionary<string,string[]>()
@@ -802,7 +802,7 @@ module FormatLemma =
            [| ipfPartPast.Pm; ipfPartPast.Pf; ipfPartPast.Pn; ipfPartPast.Ppl |]
         |]
     
-    let makeIpfParticiplePastStrinDict (lm :LemmaRec) =
+    let makeIpfParticiplePastStringDict (lm :LemmaRec) =
         let ipfPartPast = makeIpfParticiplePastString lm
         
         let dic = Dictionary<string,string[]>()
@@ -894,11 +894,11 @@ module FormatLemma =
                                     Pos = PosTag.Verb
                                     NounStringDict = null
                                     AdjStringDict = null
-                                    IpfPresentStrinDict  = makeIpfPresentStrinDict lm
-                                    IpfPastStringDict = makeIpfPasseStrinDict lm
-                                    IpfFutureStringDict  = makeIpfFutureStrinDict lm
-                                    IpfParticiplePresentStringDict = makeIpfParticiplePresentStrinDict lm 
-                                    IpfParticiplePastStringDict  = makeIpfParticiplePastStrinDict lm
+                                    IpfPresentStrinDict  = makeIpfPresentStringDict lm
+                                    IpfPastStringDict = makeIpfPasseStringDict lm
+                                    IpfFutureStringDict  = makeIpfFutureStringDict lm
+                                    IpfParticiplePresentStringDict = makeIpfParticiplePresentStringDict lm 
+                                    IpfParticiplePastStringDict  = makeIpfParticiplePastStringDict lm
                                 }
                             verbDict
         | _ -> 

@@ -30,8 +30,8 @@ type HagenMorphService()  =
     
     interface IHagenMorphService with
         
-        member this.Setup (dbString:string, logDb:bool) =
-            let initString = $"Data Source={dbString}/HagenMorph.db"
+        member this.Setup (dbPathString:string, logDb:bool) =
+            let initString = $"Data Source={dbPathString}"
             let db = DapperDb.DapperDbObj (initString, logDb)
             let LemmasTrie = TrieDictionary<LemmaTrieData>()
             initTrieDb (db, LemmasTrie)

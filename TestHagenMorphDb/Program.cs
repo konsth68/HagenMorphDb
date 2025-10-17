@@ -18,8 +18,13 @@ public class Work
     public Work()
     {
         var curDir = Directory.GetCurrentDirectory();
+        var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var dbPath = Path.Combine(localAppData, "FranDict", "HagenMorph.db");
+        Console.WriteLine(dbPath);
+        
         //var initStr = $"Data Source={curDir}\\Db\\HagenMorph.db;version=3;";
         _hmsrv = new HagenMorphService(); //HagenMorphService(initStr, false);
+        _hmsrv.Setup(dbPath,false);
     }
 
     private void PrintStrArr(string[] str)
@@ -120,8 +125,8 @@ public class Work
     {
         Console.WriteLine("__START__");
         
-        /*
-        var res = _hmsrv.GetFormatLemmaWordPos("бегать", PosTag.Verb);
+        
+        var res = _hmsrv.GetFormatLemmaWordPos("самолет", PosTag.Noun);
 
         if(res != null)
         {
@@ -130,13 +135,13 @@ public class Work
                 PrintFormatStringDict(r);
             }
         }
-        */
-        var res = _hmsrv.GetWordInfos("доминошка");
-        foreach (var w in  res)
-        {
-            Console.WriteLine("-----------------------------------------------------------------------------------");
-            PrintWordInfo(w);
-        }
+        
+        //var res = _hmsrv.GetWordInfos("доминошка");
+        //foreach (var w in  res)
+        //{
+        //    Console.WriteLine("-----------------------------------------------------------------------------------");
+        //    PrintWordInfo(w);
+        //}
         
         Console.WriteLine("__END__");
     }

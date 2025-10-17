@@ -13,6 +13,7 @@ type HagenRawRead =
         Type : int
         NotUsed : int
         Word : string        
+        DispWord : string
         AccentPosMain : int
         PosTag : int
         GenderTag : int
@@ -159,6 +160,7 @@ type WordInfo =
         Type : TypeRec
         Morph : Morphology
         Word : string
+        DispWord : string
         AccentPos :int
     }
 
@@ -177,33 +179,34 @@ type LemmaRec =
 
 module DataMorph =
 
-    let accented     = [|"а́"; "я́"; "у́"; "ю́"; "о́"; "е́"; "э́"; "и́"; "ы́"; "А́"; "Я́"; "У́"; "Ю́"; "О́"; "Е́"; "Э́"; "И́"|]
-    let no_accented  = [|"а"; "я"; "у"; "ю"; "о"; "е"; "э"; "и"; "ы"; "А"; "Я"; "У"; "Ю"; "О"; "Е"; "Э"; "И"|]
+    //let accented     = [|"а́"; "я́"; "у́"; "ю́"; "о́"; "е́"; "э́"; "и́"; "ы́"; "А́"; "Я́"; "У́"; "Ю́"; "О́"; "Е́"; "Э́"; "И́"|]
+    //let no_accented  = [|"а"; "я"; "у"; "ю"; "о"; "е"; "э"; "и"; "ы"; "А"; "Я"; "У"; "Ю"; "О"; "Е"; "Э"; "И"|]
 
-    let mutable accentedDict :Dictionary<string,string> = null
-    let mutable noaccentedDict :Dictionary<string,string> = null 
+    //let mutable accentedDict :Dictionary<string,string> = null
+    //let mutable noaccentedDict :Dictionary<string,string> = null 
 
-    let createAccentedDicts =
-        let accdict = Dictionary<string,string>()
-        let noaccdict = Dictionary<string,string>()
+    //let createAccentedDicts =
+   //     let accdict = Dictionary<string,string>()
+   //     let noaccdict = Dictionary<string,string>()
 
-        for i in [0..16] do
-            accdict.Add(accented[i],no_accented[i])
-            noaccdict.Add(no_accented[i],accented[i])
+  //      for i in [0..16] do
+  //          accdict.Add(accented[i],no_accented[i])
+  //          noaccdict.Add(no_accented[i],accented[i])
 
-        accentedDict <- accdict
-        noaccentedDict <- noaccdict 
+  //      accentedDict <- accdict
+  //      noaccentedDict <- noaccdict 
 
-    let HagenRawReadColumn = "HagenId,LemmaId,UpMorphId,Type,NotUsed,Word,AccentPosMain,PosTag,GenderTag,NumberTag,CaseTag,TenseTag,PersonTag,AnimalTag,OverTag"
+    let HagenRawReadColumn = "HagenId,LemmaId,UpMorphId,Type,NotUsed,Word,DispWord,AccentPosMain,PosTag,GenderTag,NumberTag,CaseTag,TenseTag,PersonTag,AnimalTag,OverTag"
         
     
     let mutable Db = null //DapperDbObj ($"Data Source={currDir}\\Db\\HagenMorph.db ;Version=3", false)    
 
     let initDataMorphDb (db :DapperDbObj) =
-        createAccentedDicts
+        //createAccentedDicts
         Db <- db    
         ()
     
+    (*
     let replaceAt (i :int) (c :char) (s :string) =
         let arr = s.ToCharArray()
         arr.[i] <- c
@@ -218,6 +221,7 @@ module DataMorph =
         let ch = string inRec.Word[acc]
         let aword = replaceAt2 acc noaccentedDict[ch] inRec.Word
         aword
+    *)
 
     let convertHagenRawReadToWordInfo (inRec:HagenRawRead) : WordInfo =
         
@@ -245,7 +249,8 @@ module DataMorph =
                 Id = idRec
                 Type = enum<TypeRec>(inRec.Type)
                 Morph = morph
-                Word = setAccentInWord inRec
+                Word = inRec.Word
+                DispWord = inRec.DispWord
                 AccentPos = inRec.AccentPosMain
             }
         

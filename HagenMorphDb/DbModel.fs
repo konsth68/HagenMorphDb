@@ -12,6 +12,7 @@ type HagenRaw =
         Type :int
         NotUsed :int
         Word : string        
+        DispWord : string
         GrammarStr : string
         Stem : string
         AccentPosMain : int
@@ -63,7 +64,7 @@ module DbModel =
         Db.ExecuteDapper sql
         
     //HagenRaw
-    let allHagenRawColumn = "Id,HagenId,LemmaId,UpMorphId,Type,NotUsed,Word,GrammarStr,Stem,AccentPosMain,AccentPosSecond,PosTag,GenderTag,NumberTag,CaseTag,TenseTag,PersonTag,AnimalTag,OverTag,Frequency,SignOfOne,Semantic"  
+    let allHagenRawColumn = "Id,HagenId,LemmaId,UpMorphId,Type,NotUsed,Word,DispWord,GrammarStr,Stem,AccentPosMain,AccentPosSecond,PosTag,GenderTag,NumberTag,CaseTag,TenseTag,PersonTag,AnimalTag,OverTag,Frequency,SignOfOne,Semantic"  
     
     //sql string
             
@@ -73,8 +74,9 @@ module DbModel =
                    "LemmaId," +
                    "UpMorphId," +
                    "Type," +
-                   "NotUsed," +
+                   "NotUsed," +                  
                    "Word," +
+                   "DispWord," +
                    "GrammarStr," +
                    "Stem," +
                    "AccentPosMain," +
@@ -118,10 +120,11 @@ module DbModel =
         let sql = $"UPDATE HagenRaw SET " +
                       $" HagenId = {data.HagenId}, " + 
                       $" LemmaId = {data.LemmaId}, " +
-                      $" UpMorph = {data.UpMorphId}, " +
+                      $" UpMorphId = {data.UpMorphId}, " +
                       $" Type = {data.Type}, " +
                       $" NotUsed = {data.NotUsed}, " +                      
                       $" Word = \'{data.Word}\', " +
+                      $"DispWord = \'{data.DispWord}\'," +
                       $" GrammarStr = \'{data.GrammarStr}\', " +
                       $" Stem = \'{data.Stem}\', " +
                       $" AccentPosMain = {data.AccentPosMain}, " +
@@ -135,7 +138,7 @@ module DbModel =
                       $" AnimalTag = {data.AnimalTag}, " +
                       $" OverTag = {data.OverTag}, "+
                       $" Frequency = \'{data.Frequency}\', " +
-                      $" SignOfOnce = \'{data.SignOfOnce}\', " +
+                      $" SignOfOne = \'{data.SignOfOnce}\', " +
                       $" Semantic = \'{data.Semantic}\' " +
                       $" WHERE Id = {data.Id}"
         sql
