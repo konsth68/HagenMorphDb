@@ -128,3 +128,8 @@ module TrieOpt =
                 |None -> Seq.empty
         r
         |> Seq.filter (fun l -> l.LemmaItem.Morph.PosTag = pos)
+
+    let getMorphWordByLemmaId (lemmaId :int64)  =
+        let hr = getHagenRawRead lemmaId
+        let lemmas = convertHagenRawReadToLemmas hr
+        lemmas

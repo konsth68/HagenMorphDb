@@ -17,6 +17,7 @@ type IHagenMorphService =
     abstract GetTrieLemmaWordPos  :  string * PosTag-> ResizeArray<LemmaRec>
     abstract GetFormatLemmaWordPos  : string * PosTag -> ResizeArray<FormatStringDict>
     abstract GetWordInfos : string -> ResizeArray<WordInfo>
+    abstract GetFormatMorphById : int64 -> ResizeArray<FormatStringDict>
 
 type HagenMorphService()  =    
     //let Db = null;//DapperDb.DapperDbObj (DbString, LogDb)
@@ -72,6 +73,11 @@ type HagenMorphService()  =
         member this.GetWordInfos (word :string) =
             let r = getWordInfo word
             ResizeArray<WordInfo> r 
+        
+        member this.GetFormatMorphById (hagenId :int64) =
+            let r = getMorphByLemmaId hagenId
+            let fr = makeFormatStringDict r
+            ResizeArray<FormatStringDict> fr
         
     //new () =
     //    let curDir = Directory.GetCurrentDirectory()

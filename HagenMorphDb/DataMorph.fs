@@ -307,7 +307,10 @@ module DataMorph =
                   $" SELECT HagenId FROM HagenRaw WHERE (Word = \'{word}\') and (Type = 1 ) ) ) " 
         sql
     
-        
+    let sqlQueryLemmaById (hagenId :int64) =
+        let sql = $"SELECT {HagenRawReadColumn} FROM HagenRaw WHERE (LemmaId = {hagenId}) OR (HagenId = {hagenId})"
+        sql
+      
     let getMorphFromHagenRaw  (sql :string) : HagenRawRead seq option =        
         let res = Db.QueryManyDapper<HagenRawRead> sql
         res
@@ -337,4 +340,9 @@ module DataMorph =
     let getLemmaPartWord (partword :string) =
         let mr = getMorphFromHagenRaw (sqlQueryPartWord partword)
         let lm = convertHagenDbToLemmas mr
-        lm 
+        lm
+        
+    let getMorphByLemmaId (hagenId :int64) =
+        let mr = getMorphFromHagenRaw (sqlQueryLemmaById hagenId)
+        let lm = convertHagenDbToLemmas mr
+        lm  

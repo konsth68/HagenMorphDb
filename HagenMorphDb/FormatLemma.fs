@@ -377,6 +377,10 @@ module FormatLemma =
     
     let formatString (morf :string) (word :string) =
         $"<m {morf} m>  <w {word} w>"    
+    
+    let sortWordInfoByAnimalTag (wiq :WordInfo seq) =
+        wiq 
+        |> Seq.sortBy (fun w -> if w.Morph.AnimalTag = AnimalTag.Inanimate then -1 else 1)
         
     let formatTagString (wiq :WordInfo seq) = 
         match wiq.Count() with
@@ -386,6 +390,7 @@ module FormatLemma =
                 formatString (printMorph w.Morph) w.DispWord 
         | x when x > 1 ->
                 wiq 
+                |> sortWordInfoByAnimalTag
                 |> Seq.map (fun w -> formatString (printMorph w.Morph) w.DispWord)
                 |> String.concat ", "
                 
