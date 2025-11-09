@@ -93,7 +93,7 @@ public class Work
         }
         else if(dict.Pos == PosTag.Verb )
         {
-            PrintDict(dict.IpfPresentStrinDict,dict.Pos);
+            PrintDict(dict.IpfPresentStringDict,dict.Pos);
             PrintDict(dict.IpfPastStringDict,dict.Pos);
             PrintDict(dict.IpfFutureStringDict,dict.Pos);
             PrintDict(dict.IpfParticiplePresentStringDict,dict.Pos);

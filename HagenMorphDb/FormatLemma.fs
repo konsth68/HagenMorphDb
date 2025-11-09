@@ -183,12 +183,19 @@ type FormatStringDict =
         Pos : PosTag
        
         NounStringDict : Dictionary<string,string[]>
+        IsNotEmptyNoun :bool 
         AdjStringDict : Dictionary<string,string[]>
-        IpfPresentStrinDict : Dictionary<string,string[]>
+        IsNotEmptyAdj :bool
+        IpfPresentStringDict : Dictionary<string,string[]>
+        IsNotEmptyIpfPresent :bool
         IpfPastStringDict : Dictionary<string,string[]>
+        IsNotEmptyIpfPast :bool
         IpfFutureStringDict : Dictionary<string,string[]>
+        IsNotEmptyIpfFuture :bool        
         IpfParticiplePresentStringDict : Dictionary<string,string[]>
+        IsNotEmptyIpfParticiplePresent :bool
         IpfParticiplePastStringDict : Dictionary<string,string[]>
+        IsNotEmptyIpfParticiplePast :bool
     }
 
            
@@ -863,47 +870,89 @@ module FormatLemma =
                             )
         |> Seq.filter (fun x -> x <> OverArray)
     
-     
-
+    
+    let getTetsArray (dict: Dictionary<string,string array>) =
+        let ar =
+            [|
+                for KeyValue(k,v) in dict do
+                    if (k <> "Type") then
+                       for s in v do
+                           yield s
+            |]
+        ar
+        
+    let isEmptyDict (dict: Dictionary<string,string array>) =
+         let ar = getTetsArray dict
+         ar
+         |> Array.forall (fun x -> x = "-" )
+         
     let makeLemmaFormatStringDict (lm :LemmaRec) =
         match lm.LemmaItem.Morph.PosTag with
         | PosTag.Noun -> 
+                            let nounStrAr = makeNounStringDict lm
                             let nounDict:FormatStringDict = 
                                 {
-                                    Pos = PosTag.Noun
-                                    NounStringDict = makeNounStringDict lm
+                                    Pos = PosTag.Noun                                  
+                                    NounStringDict = nounStrAr
+                                    IsNotEmptyNoun = not (isEmptyDict  nounStrAr)
                                     AdjStringDict = null
-                                    IpfPresentStrinDict  = null
+                                    IsNotEmptyAdj = false
+                                    IpfPresentStringDict  = null
+                                    IsNotEmptyIpfPresent = false
                                     IpfPastStringDict = null
+                                    IsNotEmptyIpfPast = false
                                     IpfFutureStringDict  = null
-                                    IpfParticiplePresentStringDict = null 
+                                    IsNotEmptyIpfFuture = false
+                                    IpfParticiplePresentStringDict = null
+                                    IsNotEmptyIpfParticiplePast = false
                                     IpfParticiplePastStringDict  = null
+                                    IsNotEmptyIpfParticiplePresent = false
                                 }
                             nounDict
         | PosTag.Adjective -> 
+                            let adjStrAr = makeAdjStringDict lm
                             let adjDict:FormatStringDict = 
                                 {
                                     Pos = PosTag.Adjective
                                     NounStringDict = null
-                                    AdjStringDict = makeAdjStringDict lm
-                                    IpfPresentStrinDict  = null
+                                    IsNotEmptyNoun = false
+                                    AdjStringDict = adjStrAr
+                                    IsNotEmptyAdj = not (isEmptyDict  adjStrAr)
+                                    IpfPresentStringDict  = null
+                                    IsNotEmptyIpfPresent = false
                                     IpfPastStringDict = null
+                                    IsNotEmptyIpfPast = false
                                     IpfFutureStringDict  = null
-                                    IpfParticiplePresentStringDict = null 
+                                    IsNotEmptyIpfFuture = false
+                                    IpfParticiplePresentStringDict = null
+                                    IsNotEmptyIpfParticiplePresent = false
                                     IpfParticiplePastStringDict  = null
+                                    IsNotEmptyIpfParticiplePast = false
                                 }
                             adjDict
         | PosTag.Verb ->
+                            let IpfPresentStrAr = makeIpfPresentStringDict lm
+                            let IpfPastStrAr = makeIpfPasseStringDict lm
+                            let IpfFutureStrAr = makeIpfFutureStringDict lm
+                            let IpfParticiplePresentStrAr = makeIpfParticiplePresentStringDict lm
+                            let IpfParticiplePastStrAr = makeIpfParticiplePastStringDict lm 
                             let verbDict:FormatStringDict = 
                                 {
                                     Pos = PosTag.Verb
                                     NounStringDict = null
+                                    IsNotEmptyNoun = false                                
                                     AdjStringDict = null
-                                    IpfPresentStrinDict  = makeIpfPresentStringDict lm
-                                    IpfPastStringDict = makeIpfPasseStringDict lm
-                                    IpfFutureStringDict  = makeIpfFutureStringDict lm
-                                    IpfParticiplePresentStringDict = makeIpfParticiplePresentStringDict lm 
-                                    IpfParticiplePastStringDict  = makeIpfParticiplePastStringDict lm
+                                    IsNotEmptyAdj = false                                
+                                    IpfPresentStringDict  = IpfPresentStrAr
+                                    IsNotEmptyIpfPresent = not (isEmptyDict  IpfPresentStrAr)                                
+                                    IpfPastStringDict = IpfPastStrAr
+                                    IsNotEmptyIpfPast = not (isEmptyDict  IpfPastStrAr)                                
+                                    IpfFutureStringDict  = IpfFutureStrAr
+                                    IsNotEmptyIpfFuture = not (isEmptyDict  IpfFutureStrAr)                                
+                                    IpfParticiplePresentStringDict = IpfParticiplePresentStrAr
+                                    IsNotEmptyIpfParticiplePresent = not (isEmptyDict  IpfParticiplePresentStrAr)                                
+                                    IpfParticiplePastStringDict  = IpfParticiplePastStrAr
+                                    IsNotEmptyIpfParticiplePast = not (isEmptyDict  IpfParticiplePastStrAr)                               
                                 }
                             verbDict
         | _ -> 
@@ -911,12 +960,19 @@ module FormatLemma =
                                 {
                                     Pos = PosTag.None
                                     NounStringDict = null
+                                    IsNotEmptyNoun = false
                                     AdjStringDict = null
-                                    IpfPresentStrinDict  = null
-                                    IpfPastStringDict = null 
+                                    IsNotEmptyAdj = false
+                                    IpfPresentStringDict  = null
+                                    IsNotEmptyIpfPresent = false
+                                    IpfPastStringDict = null
+                                    IsNotEmptyIpfPast = false
                                     IpfFutureStringDict  = null
+                                    IsNotEmptyIpfFuture = false
                                     IpfParticiplePresentStringDict = null
+                                    IsNotEmptyIpfParticiplePresent = false
                                     IpfParticiplePastStringDict  = null
+                                    IsNotEmptyIpfParticiplePast = false
                                 }
                             overDict
 
